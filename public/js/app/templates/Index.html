@@ -1,0 +1,15 @@
+<!-- HTML Template -->
+{{#unless logged_in}}
+<div class="jumbotron">
+  <h1>Chores Tracker</h1>
+  <p>Il s'agit d'un site pour faire la liste des tâches ménagères qui doivent être faites</p>
+  <p><a class="btn btn-primary btn-lg" id="register" role="button">Register now!</a></p>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+    	<div id="chores"></div>        
+    </div>
+	<div class="col-md-2"></div>
+</div>
+{{/unless}}

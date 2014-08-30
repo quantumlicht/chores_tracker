@@ -1,0 +1,43 @@
+{
+  "name": "collarbone",
+  "description": "Movie trivia webapp",
+  "version": "0.0.1",
+  "homepage": "https://quantumlicht.github.io/collarbone",
+  "author": {
+    "name": "Philippe Guay",
+    "url": "https://github.com/quantumlicht"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:quantumlicht/collarbone.git"
+  },
+  "keywords": [
+    "trivia-bootstrap-quantumlicht-collarbone"
+  ],
+  "bugs": {
+    "url": "https://github.com/quantumlicht/collarbone/issues"
+  },
+  "main": "./server/server",
+  "dependencies": {
+    "express": "3.x",
+    "passport": "^0.2.0",
+    "passport-auth0": "^0.1.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-nodemon": "0.0.9",
+    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-shell": "~0.3.1",
+    "grunt-contrib-less": "~0.6.4",
+    "grunt-mocha-test": "~0.6.2",
+    "mongoose": "~3.6.19",
+    "superagent": "~0.15.4",
+    "expect.js": "~0.2.0",
+    "uglify-js": "~2.2.5",
+    "grunt-bg-shell": "^2.3.1"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}

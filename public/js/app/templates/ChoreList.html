@@ -1,0 +1,19 @@
+
+<form id="addChore" action='#' role="form">
+    <div class="form-group">
+    	<label for="title">Titre</label> <input class="form-control" placeholder="Tâche" id="title" type="text"/>
+        <label for="Frequency">Fréquence</label>
+    	<select class="form-control" id="frequency">
+	  			<option value="24">Chaque Jour</option>
+	  			<option value="48">Chaque 2 jours</option>
+	  			<option value="168">Chaque Semaine</option>
+	  			<option value="336">Chauqe 2 Semaines</option>
+				<option value="730">Chaque Mois</option>
+				<option value="1460">6 fois / An</option>
+				<option value="2688">3 fois / An</option>
+				<option value="4380">2 fois / An</option>
+				<option value="8760">Chaque Année</option>
+		</select>
+    </div>
+</form>
+<button id="add" class="btn btn-default">Ajouter une tâche</button>
