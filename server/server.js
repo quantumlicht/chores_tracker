@@ -11,7 +11,7 @@ var Config =  global.Config = require('./config/config').config,
     http =    require("http"),
     exphbs = require('express3-handlebars'),
     path = require('path'),
-    port =    2000,
+    port =    ( process.env.PORT || Config.listenPort ),
     mongoose =     require('mongoose'),
     server =  module.exports = express(),
     request = require('request');
