@@ -28,7 +28,8 @@
     "express3-handlebars": "^0.5.2",
     "mongoose": "^3.8.15",
     "request": "^2.40.0",
-    "async": "^0.9.0"
+    "async": "^0.9.0",
+    "superagent": "^0.18.2"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
