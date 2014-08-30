@@ -26,7 +26,7 @@ define([
                 'click #orderby-due_date': 'orderByDueDate',
                 'click #orderby-creation_date': 'orderByCreationDate',
                 'click #orderby-title': 'orderByTitle',
-                'click #sortOrder': 'toggleSortOrder',
+                'click #sortOrder': 'toggleSortOrder'
             },
 
             orderByFrequency: function(e){
@@ -61,7 +61,7 @@ define([
                 console.log('this.listView', this.listView);
                 this.$el.append(this.listView.$el);
                 // this.listView.render();
-            },
+            }
 
         });
 

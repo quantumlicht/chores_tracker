@@ -19,7 +19,7 @@ var Config =  global.Config = require('./config/config').config,
 // ======================
   
 // Connect to Database
-dbUri = process.env.DB_URL || Config.database.db_connection;
+dbUri = process.env.MONGOHQ_URL || Config.database.db_connection;
 mongoose.connect(dbUri);
 
 
@@ -30,14 +30,6 @@ db.once('open', function callback () {
   console.log('Connected to ' + Config.database.name);
 });
 
-
-
-
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'DB connection error:'));
-db.once('open', function callback () {
-  console.log('Connected to ' + db_connection);
-});
 
 
 // SERVER CONFIGURATION
