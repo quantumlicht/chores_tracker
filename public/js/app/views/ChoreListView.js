@@ -1,6 +1,7 @@
 // IndexView.js
 
 define([
+    "utils",
     "app",
     "views/ChoreView",
     "models/ChoreModel",
@@ -8,7 +9,7 @@ define([
     "text!templates/ChoreList.html"
     ],
 
-    function(app, ChoreView, ChoreModel, ChoreCollection, ChoreListTemplate){
+    function(utils, app, ChoreView, ChoreModel, ChoreCollection, ChoreListTemplate){
 
         var ChoreListView = Backbone.View.extend({
 
@@ -48,16 +49,25 @@ define([
                 console.log('ChoreListView','addChore');
                 e.preventDefault();
                 var formData = {};
+                var empty = [];
                 $('#addChore div').children('input, textarea, select').each(function(i, el) {
-                if ($(el).val() !== '') {
-                    formData[el.id] = $(el).val();
-                }
-                $(el).val('');
+                    if ($(el).val() !== '') {
+                        formData[el.id] = $(el).val();
+                    }
+                    else {
+                        empty.push(el.id);
+                    }
+                    $(el).val('');
                 });
                 // formData.user_id = app.session.user.get('user_id');
                 // formData.username = app.session.user.get('name');
                 console.log('ChoreListView','addChore','formData', formData);
-                this.collection.create(formData);
+                if (empty.length > 0) {
+                    utils.showAlert('Erreur', 'Tous les champs doivent être remplis', 'alert-danger');    
+                }
+                else {
+                    this.collection.create(formData);
+                }
             },
 
             orderByFrequency: function(){
