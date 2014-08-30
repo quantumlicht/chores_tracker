@@ -4,7 +4,7 @@
  */
 
 module.exports = function(app) {
-	app.get('/', function(req, res) {
+	app.get('/menage', function(req, res) {
   		res.render('home', { title: 'Movie Trivia' });
 	});
 };
