@@ -19,15 +19,17 @@ var Config =  global.Config = require('./config/config').config,
 // ======================
   
 // Connect to Database
-var database =  {
-    host: "localhost",
-    name: "chores_tracker",
-    port: "27017"
-};
+dbUri = process.env.DB_URL || Config.database.db_connection;
+mongoose.connect(dbUri);
 
-var db_connection = 'mongodb://' +  database.host + ':' + database.port + '/' + database.name;
 
-mongoose.connect(db_connection);
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'DB connection error:'));
+db.once('open', function callback () {
+  console.log('Connected to ' + Config.database.name);
+});
+
 
 
 
