@@ -38,9 +38,9 @@ exports.env_config = function(){
             return {
               domain: "app29054970.auth0.com",
               clientID: "mYCYA7UsTqePSwzJvKjrYx9GRbD3dF0U",
-              callbackURL: "http://collarbone.herokuapp.com/menage/callback",
+              callbackURL: "http://chores-tracker.herokuapp.com/menage/callback",
               clientSecret: 'TtFYb6CRVYO4fZTdSfRcyAhTdQNt43ycf8OsOUoi0SBloblAYz9zfVL2TioHiutp',
-              redirectUri: "http://collarbone.herokuapp.com/menage/callback"
+              redirectUri: "http://chores-tracker.herokuapp.com/menage/callback"
             };
 
         case 'test': 
