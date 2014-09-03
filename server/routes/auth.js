@@ -6,7 +6,7 @@ var logger = require('../config/config').logger;
 var passport = require('passport');
 module.exports = function(server) {
 
-	server.get('/callback', 
+	server.get('/menage/callback', 
   		passport.authenticate('auth0', { failureRedirect: '/url-if-something-fails' }), 
 		function(req, res) {
     		if (!req.user) {
@@ -18,7 +18,7 @@ module.exports = function(server) {
   		}
 	);
 
-	server.get("/api/auth", function(req, res){
+	server.get("/menage/api/auth", function(req, res){
 		// logger.info('GET /api/auth', 'req.signedCookies', req.signedCookies['connect.sess'].passport.user);
 		// var user = req.signedCookies['connect.sess'].passport.user;
 		// logger.info('GET /api/auth', 'user_id', req.signedCookies.user_id);
@@ -33,7 +33,7 @@ module.exports = function(server) {
 	});
 
 
-	server.post("/api/auth/login", function(req, res){
+	server.post("/menage/api/auth/login", function(req, res){
 	    User.findOne({username: req.body.username}, function(err, user){
 	        if(user){
 
@@ -56,9 +56,9 @@ module.exports = function(server) {
 	    });
 	});
 
-	// POST /api/auth/signup
+	// POST /menage/api/auth/signup
 	// @desc: creates a user
-	server.post("/api/auth/signup", function(req, res){
+	server.post("/menage/api/auth/signup", function(req, res){
 		console.log('signup', req.body);
 		var user = {
 			username: req.body.username,
@@ -69,12 +69,12 @@ module.exports = function(server) {
 			if (err) {
 				console.log(err)
 				if (err.code === 11000) {
-					logger.info('POST /api/auth/signup', 'Conflict', 409);
+					logger.info('POST /menage/api/auth/signup', 'Conflict', 409);
 					res.send('Conflict', 409);
 				}
 				else {
 					if (err.name === 'ValidationError') {
-						logger.info('POST /api/auth/signup', 'ValidationError');
+						logger.info('POST /menage/api/auth/signup', 'ValidationError');
 						return res.send(Object.keys(err.errors).map(function(errField) {
 							return err.errors[errField].message;
 						}).join('. '), 406);
