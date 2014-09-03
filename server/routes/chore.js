@@ -65,7 +65,6 @@ module.exports = function(server) {
 		var data = [];
 		q.exec( function(err, results) {
 			if (!err) {
-				console.log(results);
 				async.each(results, function(result, each_callback){
 					async.parallel({
 						chore: function(para_callback) {
@@ -105,14 +104,29 @@ module.exports = function(server) {
 			}
 		});
 	});
-		
+	
+	server.put('/menage/chores/:id', function(req, res) {
+		logger.info('PUT /chores/:id');
 
+		var chore = _.omit(req.body,['_id']);
+		return ChoreModel.findOneAndUpdate({}, chore, function(err, chore) {
+			if (!err) {
+				logger.info( 'Chore updated');
+				return res.send(chore);
+			}
+			else {
+				logger.error('/chores/:id','error', err);
+			}
+		});
+	});	
+	
 	server.post('/menage/chores/:id/completed', function(req, res) {
 		logger.info('POST /menage/chores/:id/completed', req.params.id);
+
 		async.parallel({
 			chore: function(callback) {
 				ChoreModel.findOne({_id: req.params.id}, function(err, chore) {
-					console.log('chore', chore);
+					// console.log('chore', chore);
 					if (!err && chore !== null) {
 						callback(null, chore);
 					}
@@ -123,7 +137,7 @@ module.exports = function(server) {
 			},
 			user: function(callback) {
 				UserModel.findOne({username: req.body.username}, function(err, user) {
-					console.log('user', user);
+					// console.log('user', user);
 					if (!err && user !== null) {
 						callback(null, user);
 					}
@@ -150,7 +164,8 @@ module.exports = function(server) {
 					else {
 						res.send(err)
 					}
-				}); 
+				});
+
 			}
 			return err;
 
