@@ -29,27 +29,27 @@ exports.env_config = function(){
             return {
               domain: "app29054970.auth0.com",
               clientID: "mYCYA7UsTqePSwzJvKjrYx9GRbD3dF0U",
-              callbackURL: "http://localhost:2000/callback",
+              callbackURL: "http://localhost:2000/callback/menage",
               clientSecret: 'TtFYb6CRVYO4fZTdSfRcyAhTdQNt43ycf8OsOUoi0SBloblAYz9zfVL2TioHiutp',
-              redirectUri: "http://localhost:2000/callback"
+              redirectUri: "http://localhost:2000/callback/menage"
             };
 
         case 'production':
             return {
               domain: "app29054970.auth0.com",
               clientID: "mYCYA7UsTqePSwzJvKjrYx9GRbD3dF0U",
-              callbackURL: "http://collarbone.herokuapp.com/callback",
+              callbackURL: "http://collarbone.herokuapp.com/callback/menage",
               clientSecret: 'TtFYb6CRVYO4fZTdSfRcyAhTdQNt43ycf8OsOUoi0SBloblAYz9zfVL2TioHiutp',
-              redirectUri: "http://collarbone.herokuapp.com/callback"
+              redirectUri: "http://collarbone.herokuapp.com/callback/menage"
             };
 
         case 'test': 
           return {
             domain: "app29054970.auth0.com",
             clientID: "mYCYA7UsTqePSwzJvKjrYx9GRbD3dF0U",
-            callbackURL: "http://localhost:2000/callback",
+            callbackURL: "http://localhost:2000/callback/menage",
             clientSecret: 'TtFYb6CRVYO4fZTdSfRcyAhTdQNt43ycf8OsOUoi0SBloblAYz9zfVL2TioHiutp',
-            redirectUri: "http://localhost:2000/callback"
+            redirectUri: "http://localhost:2000/callback/menage"
           }
 
         default:
