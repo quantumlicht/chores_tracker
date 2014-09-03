@@ -25,7 +25,7 @@ define(["app",
 
 
         url: function(){
-            return '/api/auth';
+            return app.root + '/api/auth';
         },
 
         parse: function( response) {
