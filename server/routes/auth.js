@@ -95,7 +95,7 @@ module.exports = function(server) {
 
 	// POST /api/auth/logout
 	// @desc: logs out a user, clearing the signed cookies
-	server.post("/api/auth/logout", function(req, res){
+	server.post("/menage/api/auth/logout", function(req, res){
     	res.clearCookie('user_id');
     	res.clearCookie('auth_token');
     	res.clearCookie('profile');
@@ -104,7 +104,7 @@ module.exports = function(server) {
 
 	// POST /api/auth/remove_account
 	// @desc: deletes a user
-	server.post("/api/auth/remove_account", function(req, res){
+	server.post("/menage/api/auth/remove_account", function(req, res){
     User.remove({_id:req.signedCookies.user_id, auth_token:req.signedCookies.auth_token}, function(err){
         if(err){ 
             res.json({ error: "Error while trying to delete user." });
