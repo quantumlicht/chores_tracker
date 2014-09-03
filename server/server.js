@@ -1,7 +1,8 @@
 // DEPENDENCIES
 // ============
 var logger = require('./config/config').logger;
-var env_vars = require('./config_local.json');
+var setup_password = require('./setup_password');
+var passport = require('passport');
 var Config =  global.Config = require('./config/config').config,
     env_config = require('./config/config').env_config(),
     url = require('url'),
@@ -89,12 +90,15 @@ server.configure(function() {
   
   server.use( express.cookieSession( Config.sessionSecret ) );  
   
+  server.use(passport.initialize());
+  
+  server.use(passport.session());
   // server.use(server.router);
   // console.log('env_config', env_config);
   // /* For passing environment variables inside the templates*/
   // // server.locals.env = {loco:'motive'};
   // // process.env['passport'] = JSON.stringify(env_vars.passport);
-  // server.set('env', JSON.stringify(env_config));
+  server.set('env', JSON.stringify(env_config));
 
 });
 

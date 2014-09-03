@@ -2,23 +2,36 @@
 
 define(["app",
         "views/ChoreSortView",
+        "collections/CompletedChoreCollection",
+        "collections/ChoreCollection",
         "text!templates/Index.html",
-        "text!templates/LoggedIn.html"],
+        "text!templates/LoggedIn.html",
+        "text!templates/ChoreCompletedList.html"],
 
-    function(app, ChoreSortView, IndexTemplate, LoggedInTemplate){
+    function(app, ChoreSortView, CompletedChoreCollection, ChoreCollection, IndexTemplate, LoggedInTemplate, ChoreCompletedListTemplate){
 
         var IndexView = Backbone.View.extend({
 
             template: Handlebars.compile(IndexTemplate),
+            choreCompletedListTemplate: Handlebars.compile(ChoreCompletedListTemplate),
             // View constructor
             initialize: function() {
 
                 // Calls the view's render method
                 _.bindAll(this);
-                app.session.on("change:logged_in", this.render);
-                console.log('LoginView', 'initialize');
-                this.choreSortView = new ChoreSortView();
 
+                app.session.on("change:logged_in", this.render);
+
+                this.collection = new CompletedChoreCollection({reset:true});
+                this.collection.reverseSort = false;
+                this.collection.comparator = this.collection.byLastCompletedDateComparator;
+                var self = this;
+                this.collection.fetch({success: function(data) {
+                    self.collection.trigger('reset');
+                }});
+                this.choreSortView = new ChoreSortView();
+                
+                this.listenTo(this.collection, 'reset', this.renderSideBar);
             },
 
             // View Event Handlers
@@ -28,7 +41,7 @@ define(["app",
             },
 
             redirectRegister: function(){
-                app.router.navigate('/register', {trigger:true});
+                app.router.navigate('/login', {trigger:true});
             },
 
             redirectLogin: function(){
@@ -49,12 +62,28 @@ define(["app",
                     logged_in: app.session.get('logged_in'),
                     user: app.session.user.toJSON()
                 }));
-
                 this.$el.append(this.choreSortView.$el);
                 this.choreSortView.render();
+
+                // this.collection.sort()
+             
                 // Maintains chainability
                 return this;
 
+            },
+
+            renderSideBar: function() {
+                var self = this;
+                this.collection.sort();
+                _.each(this.collection.slice(-app.LIMIT_LAST_COMPLETED), function(completed_chore){
+                    console.log('completed_chore', completed_chore.toJSON());
+                    $('#r-sidebar #choreCompletedContainer').append(self.choreCompletedListTemplate({
+                        completed_task: completed_chore.toJSON()
+                    }));
+
+                });
+
+                return this;
             }
 
         });

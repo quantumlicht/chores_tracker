@@ -26,6 +26,7 @@ define([
                 'click #orderby-due_date': 'orderByDueDate',
                 'click #orderby-creation_date': 'orderByCreationDate',
                 'click #orderby-title': 'orderByTitle',
+                'click #orderby-lastcompleted': 'orderByLastCompletedDate',
                 'click #sortOrder': 'toggleSortOrder'
             },
 
@@ -42,6 +43,11 @@ define([
             orderByCreationDate: function(e){
                 e.preventDefault();
                 this.listView.trigger('order:creation_date');
+            },
+
+            orderByLastCompletedDate: function(e){
+                e.preventDefault();
+                this.listView.trigger('order:lastcompleted');
             },
 
             orderByTitle: function(e){

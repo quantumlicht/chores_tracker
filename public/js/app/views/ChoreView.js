@@ -3,9 +3,10 @@
 define(["utils",
         "app",
         "models/ChoreModel",
+        "models/CompletedChoreModel",
         "text!templates/Chore.html"],
 
-    function(utils, app, ChoreModel, ChoreTemplate){
+    function(utils, app, ChoreModel, CompletedChoreModel, ChoreTemplate){
 
         var ChoreView = Backbone.View.extend({
 
@@ -16,8 +17,6 @@ define(["utils",
             renderForListView: false,
             // View constructor
             initialize: function(options) {
-                console.log('ChoreView', 'Fragment', Backbone.history.fragment);
-
                 // $('#' + Backbone.history.fragment.split('/')[0]).addClass('active');
 
                 if (options && options.renderForListView && typeof options.renderForListView === 'boolean' ) {
@@ -61,10 +60,21 @@ define(["utils",
 
 
             choreCompleted: function(){
+                console.log('ChoreView', 'choreCompleted', app.session);
                 this.model.set('lastCompleted', new Date());
-                console.log('ChoreView', 'choreCompleted','model', this.model);
-                this.model.save();
+                completedChore = new CompletedChoreModel({
+                    chore: this.model.get('id'),
+                    user: app.session.user
+                });
+                console.log('ChoreView', 'choreCompleted', app.session);
+                this.model.save({error: function(res){
+                    utils.showAlert('Erreur', res);
+                }});
+                completedChore.save({error: function(res){
+                    utils.showAlert('Erreur',res);
+                }});
                 this.render();
+
                 // this.model.save({lastCompleted: new Date()});
             },
 

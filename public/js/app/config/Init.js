@@ -41,6 +41,7 @@ require.config({
       // =======
 
       "backbone.validateAll": "libs/plugins/Backbone.validateAll",
+      "backbone.paginator": "libs/backbone.paginator/lib/backbone.paginator",
 
       "text": "libs/text/text",
 
@@ -98,7 +99,7 @@ require.config({
 });
 // require(['newrelic']);
 // Includes Desktop Specific JavaScript files here (or inside of your Desktop router)
-require(["app", "hbar_helpers", "routers/Router","models/SessionModel", "bootstrap", "backbone.validateAll","jquery-cookie"],
+require(["app", "hbar_helpers", "routers/Router","models/SessionModel", "bootstrap", "backbone.validateAll", "backbone.paginator", "jquery-cookie"],
 
    function(app, hbar_helpers, Router, sessionModel) {
     

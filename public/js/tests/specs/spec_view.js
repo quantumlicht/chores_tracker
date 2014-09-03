@@ -70,7 +70,7 @@ define(["app",
                 // it('produces the correct html', function(){
                 //     this.commentView.render();
 
-                //     expect(this.commentView.el.innerHTML).toContain('<h6><a href="#users/totob">totob</a> - 3 minutes ago</h6>');
+                //     expect(this.commentView.el.innerHTML).toContain('<h6><a href="#/users/totob">totob</a> - 3 minutes ago</h6>');
                 // });
             });
         });

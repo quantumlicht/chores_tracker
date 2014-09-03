@@ -6,7 +6,7 @@ define(["jquery", "backbone", "models/ChoreModel"],
 		// Creates a new Backbone Collection class object
 		var ChoreCollection = Backbone.Collection.extend({
             
-            reverseSort: false,
+            reverseSort: true,
 
 			applySortOrder: function(result) {
 				return this.reverseSort ? -result: result;
@@ -16,6 +16,12 @@ define(["jquery", "backbone", "models/ChoreModel"],
 				return this.applySortOrder(
 					a.get('frequency') > b.get('frequency') ? 1 : -1
 				);
+			},
+
+			byLastCompletedDateComparator: function(a,b) {
+				return this.applySortOrder(
+					new Date(a.get('lastCompleted')).getTime() > new Date(b.get('lastCompleted')).getTime() ? 1: -1
+				);	
 			},
 
 			byCreationDateComparator: function(a, b) {
@@ -41,11 +47,11 @@ define(["jquery", "backbone", "models/ChoreModel"],
 
 			},
 
-			comparator: this.byCreationDateComparator,
+			comparator: this.byDueDateComparator,
 
 			// Tells the Backbone Collection that all of it's models will be of type Model (listed up top as a dependency)
 			model: ChoreModel,
-			url: '/chores'
+			url: 'menage/chores'
 
 		});
 

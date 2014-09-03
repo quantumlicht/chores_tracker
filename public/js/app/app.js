@@ -12,10 +12,11 @@ define([
 function($, _, Backbone, notifier) {
 
     var app = {
-        root : "/",                     // The root path to run the application through.
-        URL : "/",                      // Base application URL
+        root : "/menage",                     // The root path to run the application through.
+        URL : "/menage",                      // Base application URL
         API : "/api",                   // Base API URL (used by models & collections)
-        maxTextLength: 95
+        maxTextLength: 95,
+        LIMIT_LAST_COMPLETED: 5
     };
 
 

@@ -22,7 +22,6 @@ define([
                 this.collection.fetch({reset: true});
                 this.collection.reverseSort=false;
 
-                this.render();
                 this.listenTo(this.collection, 'add', this.renderChore);
                 this.listenTo(this.collection, 'reset', this.render);
                 this.listenTo(this.collection, 'sort', this.render);
@@ -31,6 +30,7 @@ define([
                 this.on('order:due_date', this.orderByDueDate);
                 this.on('order:creation_date', this.orderByCreationDate);
                 this.on('order:title', this.orderByTitle);
+                this.on('order:lastcompleted', this.orderByLastCompletedDate);
                 this.on('order:toggle_order', this.toggleSortOrder);
 
             },
@@ -42,6 +42,7 @@ define([
                 'click #orderby-due_date': 'orderByDueDate',
                 'click #orderby-creation_date': 'orderByCreationDate',
                 'click #orderby-title': 'orderByTitle',
+                'click #orderby-lastcompleted': 'orderByLastCompletedDate',
                 'click #sortOrder': 'toggleSortOrder'
             },
 
@@ -59,9 +60,11 @@ define([
                     }
                     $(el).val('');
                 });
-                // formData.user_id = app.session.user.get('user_id');
-                // formData.username = app.session.user.get('name');
+                
+                formData.user_id = app.session.user.get('user_id');
+                formData.username = app.session.user.get('name') || app.session.user.get('username');
                 console.log('ChoreListView','addChore','formData', formData);
+                console.log('ChoreListView', 'addChore', 'empty', empty);
                 if (empty.length > 0) {
                     utils.showAlert('Erreur', 'Tous les champs doivent être remplis', 'alert-danger');    
                 }
@@ -85,6 +88,12 @@ define([
                 this.collection.sort();
             },
 
+            orderByLastCompletedDate: function() {
+                console.log('orderByLastCompletedDate');
+                this.collection.comparator = this.collection.byLastCompletedDateComparator;
+                this.collection.sort(); 
+            },
+
             orderByTitle: function(){
                 this.collection.comparator = this.collection.byTitleComparator;
                 this.collection.sort();
@@ -97,7 +106,6 @@ define([
 
             // Renders the view's template to the UI
             render: function() {
-                console.log('ChoreListView','render', this);
                 this.$el.html(this.template);
                 if (this.collection.length) {
                     this.collection.each(function(item) {

@@ -1,14 +1,18 @@
 // API
 // ===
 var ChoreModel = require('../models/chore');
+var Config  = require('../config/config');
+var CompletedChoreModel = require('../models/completed_chore');
+var UserModel = require('../models/user');
 var logger = require('../config/config').logger;
+var async = require('async');
 var _ = require('underscore');
 module.exports = function(server) {
 
 	// Sample Rest Call
 
-	server.get('/chores', function(req, res){
-		logger.info('GET /chores');
+	server.get('/menage/chores', function(req, res){
+		logger.info('GET /menage/chores');
 		return ChoreModel.find( function(err, chores) {
 			if (!err) {
 				return res.send(chores);
@@ -19,8 +23,8 @@ module.exports = function(server) {
 		});	
 	});
 
-	server.post('/chores', function(req, res) {
-		logger.info('POST /chores');
+	server.post('/menage/chores', function(req, res) {
+		logger.info('POST /menage/chores');
 		var chore = new ChoreModel({
 			title: req.body.title,
 			username: req.body.username,
@@ -36,37 +40,141 @@ module.exports = function(server) {
 				return res.send(chore);
 			}
 			if (err.code === 11000) {
-				logger.info('POST /chores', 'Conflict', 409);
+				logger.info('POST /menage/chores', 'Conflict', 409);
+				console.log('Conflict error', err);
 				res.send('Conflict', 409);
 			}
 			else {
 				if (err.name === 'ValidationError') {
-					logger.info('POST /chores', 'ValidationError', err);
+					logger.info('POST /menage/chores', 'ValidationError', err);
 					return res.send(Object.keys(err.errors).map(function(errField) {
 						return err.errors[errField].message;
 					}).join('. '), 406);
 				}
+				console.log(err);
+				return err;
 			}
 			return;
 		});
 	});
 
-	server.put('/chores/:id', function(req, res) {
-		logger.info('PUT /chores/:id');
 
-		var chore = _.omit(req.body,['_id']);
+	server.get('/menage/chores/completed', function(req, res) {
+		console.log('/menage/chores/completed');
+		var q=CompletedChoreModel.find({}, null).limit(req.query.limit);
+		var data = [];
+		q.exec( function(err, results) {
+			if (!err) {
+				console.log(results);
+				async.each(results, function(result, each_callback){
+					async.parallel({
+						chore: function(para_callback) {
+						 	ChoreModel.findById(result.chore, function(err, chore) {
+								if (!err) {
+									para_callback(null, chore);
+								}
+								else {
+									para_callback(err, null);
+								}
+							});
+						},
+						user: function(para_callback) {
+							UserModel.find(result.user, function(err, user) {
+								if (!err) {
+									para_callback(null, user);
+								}
+								else {
+									para_callback(err, null);
+								}
+							});
+						}
+					}, function(err, results) {
+						if (!err) {
+							data.push({
+								user:result.user,
+								chore: results.chore
+							});
+							each_callback();
+						}
+					});
+				}, function(err) {
+					if (!err) {
+						res.send(data);
+					}
+				});
+			}
+		});
+	});
+		
+
+	server.post('/menage/chores/:id/completed', function(req, res) {
+		logger.info('POST /menage/chores/:id/completed', req.params.id);
+		async.parallel({
+			chore: function(callback) {
+				ChoreModel.findOne({_id: req.params.id}, function(err, chore) {
+					console.log('chore', chore);
+					if (!err && chore !== null) {
+						callback(null, chore);
+					}
+					else {
+						callback(err,null);
+					}
+				});
+			},
+			user: function(callback) {
+				UserModel.findOne({username: req.body.username}, function(err, user) {
+					console.log('user', user);
+					if (!err && user !== null) {
+						callback(null, user);
+					}
+					else {
+
+						console.log ('user null or error', err);
+						callback(err, null);
+					}
+				});
+			}
+		},
+		function(err, results) {
+			if (!err){
+				console.log('/POST/:id/completed', 'results', results);
+				var completedChore = new CompletedChoreModel({
+						chore:results.chore,
+						user: req.body.user // bypass
+				});
+				return completedChore.save(function(err){
+					if (!err) {
+						logger.info('completechore saved');
+						return res.send(completedChore);
+					}
+					else {
+						res.send(err)
+					}
+				}); 
+			}
+			return err;
+
+		});
+
+
+	});
+
+	server.put('/menage/chores/:id', function(req, res) {
+		logger.info('PUT /menage/chores/:id');
+
+		var chore = _.omit(req.body,['_id','title']);
 		return ChoreModel.findOneAndUpdate({}, chore, function(err, chore) {
 			if (!err) {
 				logger.info( 'Chore updated');
 				return res.send(chore);
 			}
 			else {
-				logger.error('/chores/:id','error', err);
+				logger.error('/menage/chores/:id','error', err);
 			}
 		});
 	});
 
-	server.delete('/chores/:id', function(req, res) {
+	server.delete('/menage/chores/:id', function(req, res) {
 		logger.info('Deleting Chore with id', req.params.id);
 		return ChoreModel.findById(req.params.id, function(err, chore) {
 			if (!err) {

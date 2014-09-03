@@ -20,6 +20,7 @@
   <!--Detect if the browser is a mobile browser or a desktop browser and conditionally include your JavaScript -->
   <script src="https://cdn.auth0.com/w2/auth0-widget-4.0.min.js"></script>
   <script>
+      var env = {{{settings.env}}};
       (function(ua, w, d, undefined) {
 
         // App Environment
@@ -148,7 +149,6 @@
   <header data-role="header"></header>
   <div class="row">
     <div class="col-md-2 hidden-xs hidden-sm" id="l-sidebar">
-    test
     </div>
     <div class="col-md-6 col-md-offset-1">
         <!-- {{{body}}} -->
@@ -157,7 +157,7 @@
         </div>
     </div>
     <div class="col-md-2 hidden-xs hidden-sm col-md-offset-1" id="r-sidebar">
-test2
+      <div id="choreCompletedContainer"></div>
     </div>
               
   </div>

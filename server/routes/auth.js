@@ -14,7 +14,7 @@ module.exports = function(server) {
     		}
     		console.log('req.user', req.user);
     		res.cookie('profile', req.user._json,  { signed: true, maxAge: Config.cookieMaxAge  });
-    		res.redirect("#");
+    		res.redirect(Config.ROOT_URL);
   		}
 	);
 
