@@ -63,13 +63,20 @@ define([
                 
                 formData.user_id = app.session.user.get('user_id');
                 formData.username = app.session.user.get('name') || app.session.user.get('username');
+                choreModel = new ChoreModel(formData);
                 console.log('ChoreListView','addChore','formData', formData);
-                console.log('ChoreListView', 'addChore', 'empty', empty);
                 if (empty.length > 0) {
                     utils.showAlert('Erreur', 'Tous les champs doivent être remplis', 'alert-danger');    
                 }
                 else {
-                    this.collection.create(formData);
+                    if (choreModel.isValid()){
+                        this.collection.create(formData);                        
+                    }
+                    else if (choreModel.validationError && 
+                        (choreModel.validationError.hasOwnProperty('username') || choreModel.validationError.hasOwnProperty('user_id'))) {
+                        utils.showAlert('Attention!', 'Vous devez être connecté pour ajouter des tâches', 'alert-warning');
+                    
+                    }
                 }
             },
 

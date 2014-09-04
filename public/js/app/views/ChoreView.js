@@ -60,20 +60,31 @@ define(["utils",
 
 
             choreCompleted: function(){
-                console.log('ChoreView', 'choreCompleted', app.session);
-                this.model.set('lastCompleted', new Date());
-                completedChore = new CompletedChoreModel({
-                    chore: this.model.get('id'),
-                    user: app.session.user
-                });
-                console.log('ChoreView', 'choreCompleted', app.session);
-                this.model.save({error: function(res){
-                    utils.showAlert('Erreur', res);
-                }});
-                completedChore.save({error: function(res){
-                    utils.showAlert('Erreur',res);
-                }});
-                this.render();
+                if (app.session.get("logged_in")) {
+                    console.log('ChoreView', 'choreCompleted', app.session);
+                    // this.model.set('lastCompleted', new Date());
+                    completedChore = new CompletedChoreModel({
+                        chore: this.model.get('id'),
+                        user: app.session.user
+                    });
+                    console.log('ChoreView', 'choreCompleted', app.session);
+                    this.model.save({lastCompleted: new Date()},{
+                        success: function(chore){
+                            console.log('ChoreView','choreCompleted','model save success callback', 'chore', chore);
+                        },
+                        error: function(res){
+                        utils.showAlert('Erreur', res, 'alert-danger');
+                        }
+                    });
+                    
+                    completedChore.save({error: function(res){
+                        utils.showAlert('Erreur',res);
+                    }});
+                    this.render();
+                }
+                else {
+                    utils.showAlert('Attention!', 'Vous devez être connecté pour compléter une tâche', 'alert-warning')
+                }
 
                 // this.model.save({lastCompleted: new Date()});
             },

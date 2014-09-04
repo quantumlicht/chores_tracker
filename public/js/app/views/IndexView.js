@@ -76,7 +76,6 @@ define(["app",
                 var self = this;
                 this.collection.sort();
                 _.each(this.collection.slice(-app.LIMIT_LAST_COMPLETED), function(completed_chore){
-                    console.log('completed_chore', completed_chore.toJSON());
                     $('#r-sidebar #choreCompletedContainer').append(self.choreCompletedListTemplate({
                         completed_task: completed_chore.toJSON()
                     }));

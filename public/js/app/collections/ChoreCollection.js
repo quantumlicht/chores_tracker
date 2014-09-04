@@ -1,7 +1,7 @@
 // IndexCollection.js
 
-define(["jquery", "backbone", "models/ChoreModel"],
-	function($, Backbone, ChoreModel) {
+define(["app", "models/ChoreModel"],
+	function(app, ChoreModel) {
 
 		// Creates a new Backbone Collection class object
 		var ChoreCollection = Backbone.Collection.extend({

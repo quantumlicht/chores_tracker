@@ -107,15 +107,14 @@ module.exports = function(server) {
 	
 	server.put('/menage/chores/:id', function(req, res) {
 		logger.info('PUT /chores/:id');
-
-		var chore = _.omit(req.body,['_id']);
-		return ChoreModel.findOneAndUpdate({}, chore, function(err, chore) {
+		var chore = _.omit(req.body,['_id','title']);
+		return ChoreModel.findOneAndUpdate({_id:req.params.id}, chore, function(err, chore) {
 			if (!err) {
-				logger.info( 'Chore updated');
+				logger.info( 'PUT /menage/chores/' + req.params.id, 'Chore updated');
 				return res.send(chore);
 			}
 			else {
-				logger.error('/chores/:id','error', err);
+				logger.error('PUT /menage/chores/:id','error', err);
 			}
 		});
 	});	
@@ -172,21 +171,6 @@ module.exports = function(server) {
 		});
 
 
-	});
-
-	server.put('/menage/chores/:id', function(req, res) {
-		logger.info('PUT /menage/chores/:id');
-
-		var chore = _.omit(req.body,['_id','title']);
-		return ChoreModel.findOneAndUpdate({}, chore, function(err, chore) {
-			if (!err) {
-				logger.info( 'Chore updated');
-				return res.send(chore);
-			}
-			else {
-				logger.error('/menage/chores/:id','error', err);
-			}
-		});
 	});
 
 	server.delete('/menage/chores/:id', function(req, res) {
