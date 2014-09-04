@@ -23,8 +23,6 @@ define(["app",
                 app.session.on("change:logged_in", this.render);
 
                 this.collection = new CompletedChoreCollection({reset:true});
-                this.collection.reverseSort = false;
-                this.collection.comparator = this.collection.byLastCompletedDateComparator;
                 var self = this;
                 this.collection.fetch({success: function(data) {
                     self.collection.trigger('reset');

@@ -37,12 +37,12 @@ module.exports = function(server) {
 		return chore.save(function(err){
 			if (!err) {
 				logger.info('chore created');
-				return res.send(chore);
+				return res.send(chore, 200);
 			}
 			if (err.code === 11000) {
 				logger.info('POST /menage/chores', 'Conflict', 409);
 				console.log('Conflict error', err);
-				res.send('Conflict', 409);
+				res.send('La tâche existe déjà', 409);
 			}
 			else {
 				if (err.name === 'ValidationError') {

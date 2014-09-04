@@ -19,8 +19,10 @@ define([
                 // Calls the view's render method
                 _.bindAll(this);
                 this.collection = new ChoreCollection();
+                // this.collection.comparator = this.collection.byDueDateComparator;
+                // console.log('init comparator', this.collection.comparator)
                 this.collection.fetch({reset: true});
-                this.collection.reverseSort=false;
+                this.collection.toggleSortOrder();
 
                 this.listenTo(this.collection, 'add', this.renderChore);
                 this.listenTo(this.collection, 'reset', this.render);
@@ -70,7 +72,16 @@ define([
                 }
                 else {
                     if (choreModel.isValid()){
-                        this.collection.create(formData);                        
+                        this.collection.add(choreModel);
+                        choreModel.save({}, {
+                            error: function(model, response, options){
+                                utils.showAlert('Erreur!', response.responseText, 'alert-danger');   
+                                console.log('ERREUR', model, response,options);
+                            },
+                            success: function(){
+                                utils.showAlert('Succès', 'Tâche ajoutée!', 'alert-success');
+                            }
+                        });                        
                     }
                     else if (choreModel.validationError && 
                         (choreModel.validationError.hasOwnProperty('username') || choreModel.validationError.hasOwnProperty('user_id'))) {
@@ -108,11 +119,14 @@ define([
 
             toggleSortOrder: function(){
                 this.$el.find('#tooltip-btn').button('toggle');
-                this.collection.reverseSort = $('#sortOrder').hasClass('active');
+                this.collection.toggleSortOrder();
+                 // = $('#sortOrder').hasClass('active');
             },
 
             // Renders the view's template to the UI
             render: function() {
+                console.log('render', 'comparator', this.collection.comparator);
+                // this.collection.sort();
                 this.$el.html(this.template);
                 if (this.collection.length) {
                     this.collection.each(function(item) {
